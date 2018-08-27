@@ -56,6 +56,7 @@ int rows=0;
 int columns=0;
 int index_directory_list_position=-1;
 int index_directory_list_count=0;
+int dummy_variable=0;
 
 FILE *input;
 FILE *output;
