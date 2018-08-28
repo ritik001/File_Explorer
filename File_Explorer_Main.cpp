@@ -2,6 +2,16 @@
 
 int main(int argc,char *argv[])
 {
+    home="/home/ritik/Code/Ritik/Termios";
+    cur_dir=home;
+    rows=0;
+    columns=0;
+    index_directory_list_position=-1;
+    index_directory_list_count=0;
+    count_files=0;
+    directory_list=vector<string>();
+    files_list=vector<string>();
+
     Open_Non_Canonical_Mode();
 	if(argc != 2)
     {
@@ -18,10 +28,17 @@ int main(int argc,char *argv[])
     while (1) {
         c = kbget();
         if (c == KEY_ENTER) {
-
+            if(files_list[rows] == "..")
+                {
+                    getcwd(cwd,sizeof(cwd));
+                }
+            else if(files_list[rows] == ".")
+            {}
+            else{
             cur_dir=cur_dir+"/"+files_list[rows];
             chdir(cur_dir.c_str());
-            Listing_files(cur_dir);       
+            Listing_files(cur_dir);
+            }       
         } 
         else if (c == KEY_RIGHT) {
             MoveCursorRight();

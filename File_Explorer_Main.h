@@ -22,10 +22,10 @@
 #include <limits.h>
 using namespace std;
 
-char cwd[PATH_MAX];
-vector<string> directory_list=vector<string>();
-vector<string> files_list=vector<string>();
-vector<string> :: iterator it;
+extern char cwd[PATH_MAX];
+extern vector<string> directory_list;
+extern vector<string> files_list;
+extern  vector<string> :: iterator it;
 
 
 #define cursordownward(x) printf("\033[%dB", (x))
@@ -40,6 +40,7 @@ vector<string> :: iterator it;
 #define KEY_LEFT 0x0107
 #define KEY_RIGHT 0x0108
 
+void MoveBack_ParentDir();
 void MoveCursorLeft();
 void MoveCursorRight();
 void MoveCursorUp();
@@ -50,19 +51,18 @@ void Window_Size();
 void Listing_files(string);
 
 
-string home="/home/ritik/Code/Ritik/Termios";
-string cur_dir=home;
-int rows=0;
-int columns=0;
-int index_directory_list_position=-1;
-int index_directory_list_count=0;
-int dummy_variable=0;
+extern char cwd[PATH_MAX];
+extern string home;
+extern string cur_dir;
+extern int rows;
+extern int columns;
+extern int index_directory_list_position;
+extern int index_directory_list_count;
 
-FILE *input;
-FILE *output;
-int count_files=0;
-struct termios initial_settings,new_settings;
-
+extern FILE *input;
+extern FILE *output;
+extern int count_files;
+extern struct termios initial_settings,new_settings;
 
 void Listing_files(string);
 void Window_Size();

@@ -80,3 +80,10 @@ void MoveCursorDown()
     rows=rows+1;
 	cursordownward(1);
 }
+
+void MoveBack_ParentDir()
+{
+    cur_dir=cur_dir.substr(0,cur_dir.find_last_of("/"));
+    chdir(cur_dir.c_str());
+    Listing_files(cur_dir);
+}
