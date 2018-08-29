@@ -25,6 +25,7 @@ using namespace std;
 extern char cwd[PATH_MAX];
 extern vector<string> directory_list;
 extern vector<string> files_list;
+extern vector<char> mode_list;
 extern  vector<string> :: iterator it;
 
 
@@ -40,18 +41,7 @@ extern  vector<string> :: iterator it;
 #define KEY_LEFT 0x0107
 #define KEY_RIGHT 0x0108
 
-void MoveBack_ParentDir();
-void MoveCursorLeft();
-void MoveCursorRight();
-void MoveCursorUp();
-void MoveCursorDown();
-void Open_Non_Canonical_Mode();
-void clear_screen();
-void Window_Size();
-void Listing_files(string);
-
-
-extern char cwd[PATH_MAX];
+extern bool flag_check_left_right;
 extern string home;
 extern string cur_dir;
 extern int rows;
@@ -64,6 +54,8 @@ extern FILE *output;
 extern int count_files;
 extern struct termios initial_settings,new_settings;
 
+void OpenFile(string);
+void MoveBack_ParentDir();
 void Listing_files(string);
 void Window_Size();
 void Open_New_Screen();

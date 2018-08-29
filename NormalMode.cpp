@@ -3,16 +3,15 @@
 
 void NormalMode(string argv)
 {
-    it=find(directory_list.begin(),directory_list.end(),string(cwd));
-    if(it == directory_list.end())
+    if(flag_check_left_right==false)
     {
         directory_list.push_back(string(cwd));
         index_directory_list_position+=1;
         index_directory_list_count+=1;
     }
     else
-    {
-    }
+    {}
+    flag_check_left_right=false;
 
     cout << argv << "\n";
 	DIR *dp;

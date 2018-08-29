@@ -49,23 +49,30 @@ int kbget()
 
 void MoveCursorLeft()
 {
-    cout << "hello" << "\n";
-    cout << "dfdfdfd " << index_directory_list_position << "\n";
     if(index_directory_list_position == 0)
-    {    cout << "hello1" << "\n";
-    }
-    else{
+    {}
+    else
+    {
+        flag_check_left_right=true;
         index_directory_list_position-=1;
         cur_dir=directory_list[index_directory_list_position];
         chdir(cur_dir.c_str());
-            cout << "hello3" << "\n";
         Listing_files(cur_dir); 
     }
 }
 
 void MoveCursorRight()
 {
-	cursorbackward(1);
+    if(index_directory_list_position == index_directory_list_count-1)
+    {}
+    else
+    {
+        flag_check_left_right=true;
+        index_directory_list_position+=1;
+        cur_dir=directory_list[index_directory_list_position];
+        chdir(cur_dir.c_str());
+        Listing_files(cur_dir); 
+    }
 }
 
 void MoveCursorUp()
@@ -83,7 +90,12 @@ void MoveCursorDown()
 
 void MoveBack_ParentDir()
 {
+    if(cur_dir==home)
+    {}
+    else
+    {
     cur_dir=cur_dir.substr(0,cur_dir.find_last_of("/"));
     chdir(cur_dir.c_str());
     Listing_files(cur_dir);
+    }
 }

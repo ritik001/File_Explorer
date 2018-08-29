@@ -2,15 +2,20 @@
 
 int main(int argc,char *argv[])
 {
-    home="/home/ritik/Code/Ritik/Termios";
-    cur_dir=home;
-    rows=0;
-    columns=0;
-    index_directory_list_position=-1;
-    index_directory_list_count=0;
-    count_files=0;
-    directory_list=vector<string>();
-    files_list=vector<string>();
+    string home="/home/ritik/Code/Ritik/Termios";
+    string cur_dir=home;
+    int rows=0;
+    int columns=0;
+    int index_directory_list_position=-1;
+    int index_directory_list_count=0;
+    int count_files=0;
+    vector<string> directory_list=vector<string>();
+    vector <string> files_list=vector<string>();
+    vector <char> mode_list=vector<char>();
+    bool flag_check_left_right=false;
+    FILE *input;
+    FILE *output;
+    struct termios initial_settings,new_settings;
 
     Open_Non_Canonical_Mode();
 	if(argc != 2)
@@ -19,7 +24,6 @@ int main(int argc,char *argv[])
     }
 	else
 		{
-
             Listing_files(string(argv[1]));
 		}
 
@@ -30,14 +34,18 @@ int main(int argc,char *argv[])
         if (c == KEY_ENTER) {
             if(files_list[rows] == "..")
                 {
-                    getcwd(cwd,sizeof(cwd));
+                    MoveBack_ParentDir();
                 }
             else if(files_list[rows] == ".")
             {}
-            else{
+            else if(mode_list[rows]=='d'){
             cur_dir=cur_dir+"/"+files_list[rows];
             chdir(cur_dir.c_str());
             Listing_files(cur_dir);
+            }
+            else
+            {
+                OpenFile(files_list[rows]);
             }       
         } 
         else if (c == KEY_RIGHT) {
@@ -62,12 +70,18 @@ int main(int argc,char *argv[])
         else if(char(c) == 'q')
         {
             tcsetattr(fileno(input),TCSANOW,&initial_settings);
+            system("clear");
+            exit(1);
         }
         else if(char(c) == 'h')
         {
             cur_dir=home;
             chdir(cur_dir.c_str());
             Listing_files(cur_dir);
+        }
+        else if(c==127)
+        {
+            MoveBack_ParentDir();
         }
     }
     return 0;
@@ -122,10 +136,10 @@ void Window_Size()
 }
 
 
-
 void clear_screen()
 {
     files_list.erase(files_list.begin(),files_list.end());
+    mode_list.erase(mode_list.begin(),mode_list.end());
     rows=0;
 	cout << "\33[2J";
     cout << "\33[H";

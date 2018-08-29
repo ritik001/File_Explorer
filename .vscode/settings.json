@@ -1,5 +1,16 @@
 {
     "files.associations": {
-        "vector": "cpp"
+        "vector": "cpp",
+        "deque": "cpp",
+        "chrono": "cpp",
+        "limits": "cpp",
+        "valarray": "cpp",
+        "array": "cpp",
+        "forward_list": "cpp",
+        "list": "cpp",
+        "unordered_map": "cpp",
+        "unordered_set": "cpp",
+        "initializer_list": "cpp",
+        "string_view": "cpp"
     }
 }

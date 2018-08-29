@@ -21,6 +21,7 @@ void PrintFileAttr()
     mode[8]=permission & S_IWOTH ? 'w' : '-';
     mode[9]=permission & S_IXOTH ? 'x' : '-';
 
+	mode_list.push_back(mode[0]);
 	size_t file_size=fileInfo.st_size;
 	string modified_time=ctime(&fileInfo.st_mtime);
 	modified_time[modified_time.length()-1]='\0';
@@ -36,6 +37,12 @@ void PrintFileAttr()
 	}
     rows=count_files;
     count_files=0;
-
 	
+}
+
+
+void OpenFile(string file)
+{
+	if(!fork())
+    	execlp("gedit", "gedit", file, NULL);
 }
