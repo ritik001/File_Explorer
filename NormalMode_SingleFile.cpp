@@ -34,7 +34,8 @@ vector<string> :: iterator it;
 
 bool flag_check_left_right;
 bool scroll_check;
-bool up_or_down_scroll;
+bool up_or_down_scroll=false;
+bool command_mode=false;
 string home;
 string cur_dir;
 int rows;
@@ -51,6 +52,7 @@ FILE *output;
 int count_files;
 struct termios initial_settings,new_settings;
 
+void OpenStatusBar();
 void cursor_position();
 void OpenFile(string);
 void MoveBack_ParentDir();
@@ -96,12 +98,11 @@ int main(int argc,char *argv[])
             Listing_files(string(argv[1]));
 		}
 
-    int c;
-
+            int c;
     while (1) {
         c = kbget();
         if (c == KEY_ENTER) {
-            if(files_list[rows] == cur_dir)
+            if(files_list[rows] == cur_dir || rows==-1)
             {}
             else if(files_list[rows] == "..")
                 {
@@ -136,7 +137,8 @@ int main(int argc,char *argv[])
         }
         else if( char(c) == ':')
         {
-			Open_New_Screen();
+            command_mode=true;
+            OpenStatusBar();
         }
         else if(char(c) == 'q')
         {
@@ -155,6 +157,7 @@ int main(int argc,char *argv[])
             MoveBack_ParentDir();
         }
     }
+
     return 0;
 }
 
@@ -246,7 +249,7 @@ void NormalMode(string argv)
 
 void Listing_files(string argv)
 {
-     scroll_check=false; 
+    scroll_check=false; 
     clear_screen();
     mode_list.erase(mode_list.begin(),mode_list.end());
     getcwd(cwd,sizeof(cwd));
@@ -392,9 +395,7 @@ void MoveCursorDown()
     }
     else
     {
-/*         cout << "hello "; */
-//cout<<rows<<files_list.size()<<endl;
-    if((int)rows<(int)files_list.size())
+    if((int)rows<(int)files_list.size()-1)
     {rows=rows+1;
     //cout<<"hello";
 	cursordownward(1);}
@@ -408,6 +409,7 @@ void MoveBack_ParentDir()
     {}
     else
     {
+    flag_check_left_right=false;
     cur_dir=cur_dir.substr(0,cur_dir.find_last_of("/"));
     chdir(cur_dir.c_str());
     Listing_files(cur_dir);
@@ -448,6 +450,7 @@ void PrintFileAttr()
 	cout << files_list[i] << "\n";
 
 	}
+    OpenStatusBar();
     rows=-1;
     count_files=0;
     cout << "\033[0;0H";
@@ -512,6 +515,7 @@ void HandleScrolling()
 
 void cursor_position()
 {
+    OpenStatusBar();
     if(up_or_down_scroll == false)
         cout << "\033[0;0H";
     else
@@ -520,3 +524,17 @@ void cursor_position()
         cout << "\033[" << temp << ";0H";
     }
 }
+
+
+void OpenStatusBar()
+{
+    if(command_mode == false)
+        cout<<"\033[7m --- Normal Mode --- Press : to enter the Command Mode and q to exit from here  \033[m";
+    else
+        {
+        cout << "\033[" << max_rows << ";0H";
+        cout << "\033[K" ;
+        cout << "Command Mode :";
+        }
+}
+
